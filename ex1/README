@@ -1,0 +1,29 @@
+itamarc
+
+
+=============================
+=      File description     =
+=============================
+Book.java - The book class
+Library.java - The library class
+Patron.java - The patron class
+
+
+=============================
+=          Design           =
+=============================
+I followed the given API as described here: https://www.cs.huji.ac.il/~oops/ex1/oop/ex1/package-summary.html
+
+
+
+=============================
+=  Implementation details   =
+=============================
+https://www.cs.huji.ac.il/~oops/ex1/oop/ex1/package-summary.html
+
+
+=============================
+=    Answers to questions   =
+=============================
+
+N/A.
