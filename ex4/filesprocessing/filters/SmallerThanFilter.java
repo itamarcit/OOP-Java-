@@ -1,0 +1,31 @@
+package filesprocessing.filters;
+
+import java.io.File;
+import java.util.ArrayList;
+
+/**
+ * A filter that checks if a file is smaller than a given size (in bytes).
+ */
+public class SmallerThanFilter implements Filter {
+    private final double size;
+    private final boolean not;
+
+    /**
+     * Constructor for the smaller than filter.
+     * @param size the size the filter will be based upon.
+     */
+    public SmallerThanFilter(double size, boolean not) {
+        this.size = size;
+        this.not = not;
+    }
+
+    @Override
+    public void applyFilter(ArrayList<File> fileList) {
+        if(!not) {
+            fileList.removeIf(file -> file.length() >= size);
+        }
+        else {
+            fileList.removeIf(file -> file.length() < size);
+        }
+    }
+}
