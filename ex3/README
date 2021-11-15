@@ -1,0 +1,53 @@
+itamarc
+
+
+
+=============================
+=      File description     =
+=============================
+SimpleSet.java - An interface consisting of the add(), delete(), contains(), and size() method for set classes.
+ClosedHashSet.java - A hash-set based on closed-hashing with quadratic probing.
+CollectionFacadeSet.java - A facade for sets, so it'll be easier to work with them.
+OpenHashSet.java - A hash-set based on open-hashing with linked lists.
+SimpleHashSet.java - A superclass for OpenHashSet and ClosedHashSet.
+SimpleSetPerformanceAnalyzer.java - A one-method class running tests for the different databases, to check for runtimes.
+RESULTS - Runtime results of the SimpleSetPerformanceAnalyzer.java code.
+StringLinkedList.java - A delegation of linked list, used by OpenHashSet.java.
+
+
+=============================
+=          Design           =
+=============================
+I implemented the classes using the minimal API principle, keeping almost all methods private. In addition, I used
+delegation in OpenHashSet.java in order to create an array of linked lists, because you can't make an array of the
+generic collection.
+
+
+=============================
+=  Implementation details   =
+=============================
+CollectionFacadeSet -
+In the CollectionFacadeSet, I decided to use the collection toArray() method along with the clear() method
+in order for the facade to be compatible with linked lists, which are not sets by default.
+OpenHashSet -
+The way I implemented this hashset is with open-hashing. I used an array of delegated string linked lists.
+ClosedHashSet -
+In ClosedHashSet I used quadratic probing. In order to deal with the collisions in a way that'll add only constant
+runtime/memory additions, I used a static variable in the class which is a new string. Each time I deleted an element,
+I replaced the string with the static variable, and then if I needed to find an element that collided I checked if it
+was removed already, by the '==' operator which checks for equal addresses. This will not prohibit the use of any string
+because I made sure to check the 'equals' operator only after the '==' operator.
+Analyzing the results:
+* In tests 1 and 4 we see that the results of our hashsets are quite bad. That is because in these tests,
+  we test what will happen when we get bad hash function results, with many collisions. Each time we add an element,
+  we use contains() to see if it's not already in the set so we won't add duplicates. If we have many collisions
+  (which we do in these tests), we'll have to use contains on large linked lists in OpenHashSet which are O(n), and
+  likewise for ClosedHashSet - it'll be O(n) as well.
+* Obviously, I would not suggest using a plain linked list for any set, because the contains() will always be O(n).
+  If we have many collisions, then I'd suggest using either TreeSet or HashSet, depending if you want the data to be
+  sorted internally. If you don't have many collisions, then you can use Open or Closed HashSet, as the difference in
+  runtime is minor.
+* With collisions (data1.txt tests) OpenHashSet did better than ClosedHashSet, and without collisions, they compared
+  quite equally.
+* Surprisingly, Java's HashSet did much better than our implementations. After some research, I found out that even at
+  the worst case, HashSet's contains() method is O(log(n)), and not O(n) like our implementations.
