@@ -1,0 +1,57 @@
+itamarc
+
+
+
+
+=============================
+=      File description     =
+=============================
+SpaceShipFactory.java - A class driver that creates the spaceships when the game starts
+SpaceShip.java - An abstract class for all spaceship types.
+AggressiveShip.java - Defines a ship of an aggressive nature, inherits from SpaceShip
+BasherShip.java - Defines a ship that attempts to bash the ship closest to it, inherits from SpaceShip
+DrunkardShip.java - Defines a drunk ship, inherits from SpaceShip
+HumanShip.java - Defines the user's ship, inherits from SpaceShip
+RunnerShip.java - Defines a 'corward' ship, running away from the closest ship, inherits from SpaceShip
+SpecialShip.java - Defines a special ship, inherits from SpaceShip
+
+
+
+=============================
+=          Design           =
+=============================
+I decided to implement the SpaceShip class as an abstract class, because each spaceship with its different behavior
+fulfills the 'is a' relation (and not the 'has a'). Moreover, each spaceship mainly overrides the doAction method, and
+uses all the other methods as defined in the SpaceShip class. This makes the code modular, and if you wish to change a
+ship's behavior you can access the corresponding ship class. If you wish to add more types of ships, it's easy, all you
+need to do is understand the SpaceShip class create your own class to extend it. The down side of my design is that
+some classes have similar code (for example, runner ship and special ship in regenerating mode), although I decided
+that the pros outweigh the cons.
+
+
+
+=============================
+=  Implementation details   =
+=============================
+I decided to implement the drunkard and special ship as follows:
+Drunkard Ship:
+At first I thought to have an array of random numbers, and to have each action (teleport, shields, fire, moving) occur
+at random. Unfortunately, it didn't work quite well because the energy ran out too quickly. Therefore I decided to have
+it as a ship that always accelerates that will move at a random direction (random number between 0 and 1 that'll decide
+whether left/right) and to have another random element, a number from 0 to 49 and that if it lands on a specific number
+it'll fire (1/50 chance to shoot each round), it works well because the rounds are really fast. However as mentioned, I
+decided that it won't have the ability to turn on its shields or to teleport.
+Special Ship:
+I tried to think of a ship that'll be more challenging to beat and of a way to bring a unique feature into the game.
+I came up with the idea to make the ship have two three stages: dormant, active and regenerating.
+In the beginning of the game it starts as dormant, for a constant value of game rounds. During that time,
+it can fire if ships come close enough to it, and likewise turn on its shields. If it survived the dormant stage, it'll
+switch into active mode. During the switch, it'll get a new physics location (to teleport randomly to somewhere else),
+have its health back to the maximum and have its energy not only replenished but increased
+(both maximum and current energy).
+In the active stage, it'll act a bit like the aggressive ship, but it will not bash purposely into other ships, it'll
+attempt to keep distance from them (by not accelerating when it's close to another ship). If a ship bashes into it,
+it'll teleport away to avoid taking more damage from that enemy. If it reaches an amount of energy that won't allow it
+to teleport away, it'll enter the regenerating mode. It'll change its behavior to be like the runner ship until it has
+the current energy match the maximum energy of the ship.
+If the ship's destroyed, it'll once again turn into dormant mode, allowing for various strategies to beat the ship.
